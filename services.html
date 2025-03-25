@@ -3,8 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services</title>
+    <title>About QuizQraft</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 20px;
+            padding-left: 250px;
+        }
+
+        .info-section {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .info-section h2 {
+            color: #2196F3;
+        }
+
+        .info-section p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .info-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .info-section ul li {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .cta-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #2196F3;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background-color: #0b7dda;
+        }
+
         .mode-selector {
             text-align: center;
             margin-bottom: 20px;
@@ -89,18 +159,68 @@
         width: 100%;
         padding-top: 10px;
     }
+    .info-section img {
+        max-width: 100%; /* Ensure the image does not exceed the container's width */
+        height: auto; /* Maintain aspect ratio */
+        width: 300px; /* Set a specific width */
+        display: block; /* Center the image */
+        margin: 20px auto;
+        }
+    .image-row {
+        display: flex;
+        justify-content: center;
+        gap: 20px; /* Space between images */
+        margin: 20px 0; /* Margin for spacing around the row */
+    }
+    .info-section h3 {
+        text-align: center;
+    }
+
+    .info-section iframe {
+        display: block;
+        margin: 0 auto;
+    }
+
     </style>
 </head>
 <body>
-
     <div class="sidenav">
         <img src="image2.jpg" alt="Sidebar Image">
         <div class="section-title">Navigation</div>
         <div class="nav-items">
-        <a href="main.html"><i class="fas fa-info-circle"></i> Main</a>
+        <a href="main.html"><i class="fas fa-envelope"></i>Main</a>
         <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
         <a href="services.html"><i class="fas fa-cogs"></i> Services</a>
         <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
     </div>
     </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="info-section">
+            <audio controls>
+                <source src="aboutaudio.mp3" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+            <h1>Services</h1>
+            <h2>How QuizQraft Empowers Students</h2>
+            <p>QuizQraft is a powerful study tool designed to help students take control of their learning through personalized flashcards. Whether preparing for school exams, standardized tests, or personal learning goals, QuizQraft makes studying more effective, engaging, and efficient.</p>
+
+            <p>With QuizQraft, students can maximize their study sessions by:</p>
+            <ul>
+                <li><strong>Creating Customized Flashcards:</strong> Quickly generate digital flashcards tailored to specific subjects, topics, or key concepts, ensuring a personalized study experience.</li>
+                <li><strong>Reviewing with Efficiency:</strong> Choose between random or sequential reviews to reinforce understanding and identify areas needing improvement.</li>
+                <li><strong>Tracking Study Progress:</strong> Organize flashcards into decks and monitor progress over time to stay on top of learning goals.</li>
+                <li><strong>Enhancing Memory Retention:</strong> Leverage spaced repetition techniques to improve recall and make learning stick for the long term.</li>
+            </ul>
+
+            <p>By integrating QuizQraft into their study routines, students can break down complex subjects into manageable pieces, reduce exam stress, and achieve academic success with confidence!</p>
+
+            <h3>Watch this video explaining the service of QuizQraft</h3>
+            <iframe src="https://share.synthesia.io/2ba475eb-f091-40b0-9520-c145ace634b8" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+            <a href="main.html" class="cta-button">Start Studying Now</a>
+        </div>
+    </div>
+    
+</body>
 </html>
