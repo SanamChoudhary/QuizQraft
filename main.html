@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizQraft: Study Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            padding-left: 150px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-left: 150px;
+        }
+        .card-creator, .flashcard-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .flashcard {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: white;
+            position: relative;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .flashcard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .flashcard.flipped {
+            background-color: #f9f9f9;
+        }
+        .flashcard-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .flashcard-actions button {
+            background-color: #f44336;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .flashcard-actions button:hover {
+            background-color: #d32f2f;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .mode-selector {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-left: 150px;
+        }
+        .mode-selector button {
+            margin: 0 5px;
+            background-color: #2196F3;
+        }
+        .mode-selector button.active {
+            background-color: #0b7dda;
+        }
+        .sidenav {
+        height: 100%;
+        width: 220px; /* Slightly wider for better spacing */
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #2196F3; /* More vibrant blue */
+        color: white; /* Text color for better contrast */
+        padding-top: 0;
+        padding-bottom: 20px; /* More space at the bottom */
+        box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Sidebar image styling */
+    .sidenav img {
+        width: 100%;
+        height: auto;
+        border-bottom: 2px solid #fff; /* Border for separation */
+    }
+
+    /* Sidebar links */
+    .sidenav a {
+        padding: 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+        display: flex;
+        align-items: center;
+        font-family: Helvetica, Arial, sans-serif;
+        transition: background-color 0.3s, padding-left 0.3s; /* Smooth transition for hover effects */
+        width: 100%;
+    }
+
+    /* Hover effect */
+    .sidenav a:hover {
+        background-color: #0b7dda;
+        color: #f1f1f1;
+        padding-left: 25px; /* Slight indentation for a dynamic effect */
+    }
+
+    /* Icon styling */
+    .sidenav a i {
+        margin-right: 10px;
+    }
+
+    /* Active link styling */
+    .sidenav a.active {
+        background-color: #0b7dda; /* Highlight active link */
+    }
+
+    /* Section titles */
+    .sidenav .section-title {
+        padding: 10px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        margin-top: 20px;
+        width: 100%;
+        background-color: #0b7dda; /* Match the active color */
+    }
+
+    /* Section for navigation items */
+    .sidenav .nav-items {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding-top: 10px;
+    }
+    </style>
+</head>
+<body>
+    <h1>QuizQraft: Study Flashcards</h1>
+
+    <div class="sidenav">
+        <img src="image2.jpg" alt="Sidebar Image">
+        <div class="section-title">Navigation</div>
+        <div class="nav-items">
+        <a href="about.html" class="active"><i class="fas fa-info-circle"></i> About</a>
+        <a href="services.html"><i class="fas fa-cogs"></i> Services</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+    </div>
+    </div>
+    
+    <div class="mode-selector">
+        <button id="createModeBtn" class="active">Create Flashcards</button>
+        <button id="reviewModeBtn">Review Flashcards</button>
+    </div>
+    
+    <div class="container">
+        <div id="creatorView" class="card-creator">
+            <h2>Create New Flashcard</h2>
+            <div class="form-group">
+                <label for="question">Question:</label>
+                <textarea id="question" placeholder="Enter your question here..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="answer">Answer:</label>
+                <textarea id="answer" placeholder="Enter the answer here..."></textarea>
+            </div>
+            <button id="addCardBtn">Add Flashcard</button>
+            
+            <h2>Your Flashcards</h2>
+            <div id="flashcardsList"></div>
+        </div>
+        
+        <div id="reviewerView" class="flashcard-container hidden">
+            <div id="reviewFlashcard" class="flashcard">
+                <div class="flashcard-content">
+                    <p id="reviewText">No flashcards available. Please create some first.</p>
+                </div>
+            </div>
+            <div class="controls">
+                <button id="prevBtn">Previous</button>
+                <span id="cardCounter">0/0</span>
+                <button id="nextBtn">Next</button>
+            </div>
+            <div style="text-align: center; margin-top: 10px;">
+                <button id="flipBtn">Flip Card</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const createModeBtn = document.getElementById('createModeBtn');
+        const reviewModeBtn = document.getElementById('reviewModeBtn');
+        const creatorView = document.getElementById('creatorView');
+        const reviewerView = document.getElementById('reviewerView');
+        const addCardBtn = document.getElementById('addCardBtn');
+        const questionInput = document.getElementById('question');
+        const answerInput = document.getElementById('answer');
+        const flashcardsList = document.getElementById('flashcardsList');
+        const reviewFlashcard = document.getElementById('reviewFlashcard');
+        const reviewText = document.getElementById('reviewText');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const flipBtn = document.getElementById('flipBtn');
+        const cardCounter = document.getElementById('cardCounter');
+
+        // State
+        let flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+        let currentReviewIndex = 0;
+        let isFlipped = false;
+
+        // Mode switching
+        createModeBtn.addEventListener('click', () => {
+            creatorView.classList.remove('hidden');
+            reviewerView.classList.add('hidden');
+            createModeBtn.classList.add('active');
+            reviewModeBtn.classList.remove('active');
+        });
+
+        reviewModeBtn.addEventListener('click', () => {
+            if (flashcards.length === 0) {
+                alert('Please create at least one flashcard first.');
+                return;
+            }
+            creatorView.classList.add('hidden');
+            reviewerView.classList.remove('hidden');
+            createModeBtn.classList.remove('active');
+            reviewModeBtn.classList.add('active');
+            currentReviewIndex = 0;
+            updateReviewCard();
+        });
+
+        // Flashcard creation
+        addCardBtn.addEventListener('click', () => {
+            const question = questionInput.value.trim();
+            const answer = answerInput.value.trim();
+            
+            if (!question || !answer) {
+                alert('Please enter both a question and an answer.');
+                return;
+            }
+            
+            const newCard = { question, answer };
+            flashcards.push(newCard);
+            saveFlashcards();
+            renderFlashcardsList();
+            
+            questionInput.value = '';
+            answerInput.value = '';
+            questionInput.focus();
+        });
+
+        // Flashcard review
+        reviewFlashcard.addEventListener('click', () => {
+            isFlipped = !isFlipped;
+            updateReviewCard();
+        });
+
+        flipBtn.addEventListener('click', () => {
+            isFlipped = !isFlipped;
+            updateReviewCard();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (flashcards.length === 0) return;
+            currentReviewIndex = (currentReviewIndex - 1 + flashcards.length) % flashcards.length;
+            isFlipped = false;
+            updateReviewCard();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (flashcards.length === 0) return;
+            currentReviewIndex = (currentReviewIndex + 1) % flashcards.length;
+            isFlipped = false;
+            updateReviewCard();
+        });
+
+        // Helper functions
+        function saveFlashcards() {
+            localStorage.setItem('flashcards', JSON.stringify(flashcards));
+        }
+
+        function renderFlashcardsList() {
+            flashcardsList.innerHTML = '';
+            
+            if (flashcards.length === 0) {
+                flashcardsList.innerHTML = '<p>No flashcards yet. Create your first one!</p>';
+                return;
+            }
+            
+            flashcards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'flashcard';
+                cardElement.innerHTML = `
+                    <div class="flashcard-content">
+                        <p><strong>Q:</strong> ${card.question}</p>
+                        <p class="hidden"><strong>A:</strong> ${card.answer}</p>
+                    </div>
+                    <div class="flashcard-actions">
+                        <button data-index="${index}" class="delete-btn">Delete</button>
+                    </div>
+                `;
+                
+                const deleteBtn = cardElement.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    flashcards.splice(index, 1);
+                    saveFlashcards();
+                    renderFlashcardsList();
+                });
+                
+                cardElement.addEventListener('click', () => {
+                    cardElement.querySelector('p.hidden').classList.toggle('hidden');
+                });
+                
+                flashcardsList.appendChild(cardElement);
+            });
+        }
+
+        function updateReviewCard() {
+            if (flashcards.length === 0) {
+                reviewText.textContent = 'No flashcards available. Please create some first.';
+                cardCounter.textContent = '0/0';
+                return;
+            }
+            
+            const card = flashcards[currentReviewIndex];
+            reviewText.textContent = isFlipped ? card.answer : card.question;
+            reviewFlashcard.className = isFlipped ? 'flashcard flipped' : 'flashcard';
+            cardCounter.textContent = `${currentReviewIndex + 1}/${flashcards.length}`;
+        }
+
+        // Initialize
+        renderFlashcardsList();
+    </script>
+</body>
+</html>
